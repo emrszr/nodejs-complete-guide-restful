@@ -22,8 +22,8 @@ exports.signUp = async (req, res, next) => {
       name: name,
     });
     await user.save();
-    res.status(200).json({ message: "User creaated!", userId: result._id });
-  } catch (error) {
+    res.status(200).json({ message: "User creaated!", userId: user._id });
+  } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
     }
@@ -53,7 +53,7 @@ exports.login = async (req, res, next) => {
       { expiresIn: "1h" }
     );
     res.status(200).json({ token: token, userId: user._id.toString() });
-  } catch (error) {
+  } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
     }

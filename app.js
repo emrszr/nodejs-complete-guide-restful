@@ -54,13 +54,18 @@ app.use("/feed", feedRoutes);
 app.use("/auth", authRoutes);
 
 app.use((error, req, res, next) => {
+  console.log(error);
   res.status(error.statusCode || 500).json({ message: error.message });
 });
 
 mongoose
   .connect(MONGODB_URI)
   .then((result) => {
-    app.listen(port);
+    const server = app.listen(port);
+    const io = require("./socket").init(server);
+    io.on("connection", (socket) => {
+      console.log("Client connected");
+    });
   })
   .catch((err) => {
     console.log(err);
